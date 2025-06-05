@@ -10,18 +10,12 @@ public class Pilha {
         this.cabeca = null;
     }
 
-    public void push(Carta carta) throws JogadaInvalidaException {
+    public void push(Carta carta) {
         // Faz a validação do movimento das pilhas de funcação (4 naipes)
-        if (cabeca != null && cabeca.valor.getNumero() == carta.getNumero() - 1 && cabeca.valor.getNaipeString().equals(carta.getNaipeString()) && cabeca.valor.getCorString().equals(carta.getCorString())) {
+        if (cabeca != null) {
             No<Carta> novo = new No<Carta>(carta);
             novo.proximo = cabeca;
             cabeca = novo;
-        } else if (cabeca == null && carta.getNumero() == 1) {
-            No<Carta> novo = new No<Carta>(carta);
-            novo.proximo = cabeca;
-            cabeca = novo;
-        } else {
-            throw new JogadaInvalidaException("Você não pode fazer esse movimento.");
         }
     }
 
@@ -31,5 +25,12 @@ public class Pilha {
             System.out.println(atual.valor);
             atual = atual.proximo;
         }
+    }
+
+    public Carta get() {
+        if(this.cabeca != null) {
+            return cabeca.valor;
+        }
+        return null;
     }
 }

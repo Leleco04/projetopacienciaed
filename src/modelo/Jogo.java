@@ -14,14 +14,12 @@ public class Jogo {
     private ListaLigada[] listaConstrucao;
     private Pilha[] pilhaFundacao;
     private Fila monte;
-    private Fila descarte;
 
     public Jogo() {
         baralho = new Baralho();
         listaConstrucao = new ListaLigada[7];
         pilhaFundacao = new Pilha[4];
         monte = new Fila();
-        descarte = new Fila();
         cartas = baralho.getBaralho();
 
         for (int i = 0; i < listaConstrucao.length; i++) {
@@ -44,10 +42,10 @@ public class Jogo {
                 rnd = gerador.nextInt(1, cartas.length);
             }
             numerosGerados[contagem] = rnd;
-            cartas[rnd].mostrarCarta();
             monte.enqueue(cartas[rnd]);
             contagem++;
         }
+        monte.get().mostrarCarta();
     }
 
     public void embaralhar() {
@@ -57,6 +55,14 @@ public class Jogo {
     public void inserirListaConstrucao(Carta carta) {
         try {
             listaConstrucao[0].inserirInicio(carta);
+        } catch(JogadaInvalidaException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void inserirPilhaFundacao(Carta carta) {
+        try {
+            Regra.inserirPilha(pilhaFundacao[0], carta);
         } catch(JogadaInvalidaException e){
             System.out.println(e.getMessage());
         }

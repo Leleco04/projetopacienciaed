@@ -22,6 +22,13 @@ public class Fila {
         }
     }
 
+    public void rodarFila() {
+        cabeca.valor.esconderCarta();
+        enqueue(dequeue());
+        cabeca.valor.mostrarCarta();
+        exibirFila();
+    }
+
     public void exibirFila() {
         No<Carta> no = cabeca;
         int contagem = 1;
@@ -42,5 +49,9 @@ public class Fila {
             cauda = null;
         }
         return valor;
+    }
+
+    public Carta get() {
+        return cabeca.valor;
     }
 }

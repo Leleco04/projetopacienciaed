@@ -1,11 +1,5 @@
 package principal;
 
-import estrutura.Fila;
-import estrutura.ListaLigada;
-import estrutura.Pilha;
-import exceptions.JogadaInvalidaException;
-import modelo.Baralho;
-import modelo.Carta;
 import modelo.Jogo;
 
 import java.util.Scanner;
@@ -50,8 +44,10 @@ public class Main {
                         char acao = teclado.next().charAt(0);
                         switch (Character.toLowerCase(acao)) {
                             case 'a':
+                                jogo.inserirPilhaFundacao(jogo.getMonte().get());
                                 break;
                             case 'b':
+                                jogo.getMonte().rodarFila();
                                 break;
                             case 'c':
                                 jogo.inserirListaConstrucao(jogo.getMonte().dequeue());
