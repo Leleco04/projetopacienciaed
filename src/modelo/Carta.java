@@ -25,7 +25,7 @@ public class Carta {
     public String getNaipeString() {
         if(isVisivel()) {
             if(cor.equals(Cor.VERMELHA)) return NEGRITO + VERMELHO + String.valueOf(naipe) + RESET;
-            else return NEGRITO + PRETO + String.valueOf(naipe) + RESET;
+            else return NEGRITO + PRETO + BRANCO + String.valueOf(naipe) + RESET;
         } else {
             return "[?]";
         }
@@ -33,7 +33,7 @@ public class Carta {
 
     public String getCorString() {
         if(cor.equals(Cor.VERMELHA)) return NEGRITO + VERMELHO + String.valueOf(cor) + RESET;
-        else return NEGRITO + PRETO + String.valueOf(cor) + RESET;
+        else return NEGRITO + PRETO + BRANCO + String.valueOf(cor) + RESET;
     }
 
     public Cor getCor() {
