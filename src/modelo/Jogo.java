@@ -80,8 +80,7 @@ public class Jogo {
                     rnd = gerador.nextInt(cartas.length);
                 } while (!verificarNumero(rnd, numerosGerados));
                 numerosGerados[contagem] = rnd;
-                // ... lógica de mostrar/esconder e adicionar a carta ...
-                Regra.inserirLista(listaConstrucao[j], cartas[rnd], "inicio");
+                listaConstrucao[j].adicionar(cartas[rnd]);
                 contagem++;
             }
             listaConstrucao[j].verTopo().mostrarCarta();
@@ -153,6 +152,8 @@ public class Jogo {
 
     public void removerUmaCartaLista(ListaLigada<Carta> lista) {
         lista.remover();
-        lista.verTopo().mostrarCarta();
+        if(!lista.estaVazia()) {
+            lista.verTopo().mostrarCarta();
+        }
     }
 }

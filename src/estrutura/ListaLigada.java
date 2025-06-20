@@ -10,6 +10,9 @@ public class ListaLigada<T> extends Estrutura<T> {
 
     @Override
     public T verTopo() {
+        if(this.cabeca == null) {
+            return null;
+        }
         return cabeca.valor;
     }
 
@@ -53,11 +56,13 @@ public class ListaLigada<T> extends Estrutura<T> {
 
     @Override
     public T remover() {
+        T removido = cabeca.valor;
+
         cabeca = cabeca.proximo;
         if (cabeca == null) {
             cauda = null;
         }
-        return cabeca.valor;
+        return removido;
     }
 
     public T get(int indice) {
