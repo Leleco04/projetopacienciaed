@@ -1,4 +1,4 @@
-[🃏 Jogo de Paciência em Java
+🃏 Jogo de Paciência em Java
 📖 Sobre o Projeto
 Este projeto é uma implementação do clássico jogo de cartas Paciência, desenvolvido inteiramente em Java como uma aplicação de console.
 
@@ -79,10 +79,9 @@ Lista Ligada
 ▶️ Como Jogar
 Siga as instruções no menu do jogo para interagir com o sistema e mover as cartas de acordo com as regras do Paciência!
 
-👤 
+👤 Autor
+Leandro Hideki Tsuchida
 
-github.com/Leleco04
+GitHub: Leleco04
 
-https://www.linkedin.com/in/leandro-hideki-tsuchida-3ab4742a0/
-
-](https://www.linkedin.com/in/leandro-hideki-tsuchida-3ab4742a0/)
+LinkedIn: Leandro Hideki Tsuchida
