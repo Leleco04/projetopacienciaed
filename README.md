@@ -1,11 +1,14 @@
-Jogo de Paciência em Java
+🃏 Jogo de Paciência em Java
 📖 Sobre o Projeto
-Este projeto é uma implementação do clássico jogo de cartas Paciência, desenvolvido inteiramente em Java como uma aplicação em console. O principal objetivo foi aplicar e solidificar os conceitos fundamentais da Programação Orientada a Objetos (POO), criando um software modular, coeso e de fácil manutenção.
+Este projeto é uma implementação do clássico jogo de cartas Paciência, desenvolvido inteiramente em Java como uma aplicação de console.
+
+O principal objetivo é aplicar e solidificar os conceitos fundamentais da Programação Orientada a Objetos (POO), criando um software modular, coeso e de fácil manutenção.
 
 O jogo simula todas as regras e funcionalidades da versão tradicional, permitindo que o utilizador interaja através de comandos de texto no terminal.
 
 ✨ Funcionalidades
-Início de Jogo Completo: Distribuição automática das 28 cartas nas sete colunas do tableau e das 24 cartas restantes no monte de compra.
+Início de Jogo Completo
+Distribuição automática das 28 cartas nas sete colunas do tableau e das 24 cartas restantes no monte de compra.
 
 Movimentação de Cartas:
 
@@ -17,7 +20,7 @@ Mover cartas das colunas de construção para as pilhas de fundação.
 
 Mover uma ou mais cartas entre as colunas de construção.
 
-Validação de Regras: O sistema valida todas as jogadas de acordo com as regras do Paciência:
+Validação de Regras:
 
 Fundações: Ordem crescente (Ás a Rei) e mesmo naipe.
 
@@ -25,45 +28,60 @@ Construção: Ordem decrescente (Rei a Ás) e cores alternadas.
 
 Apenas Reis podem ser movidos para colunas vazias.
 
-Visualização do Jogo: Exibição clara do estado atual do tabuleiro, incluindo o monte, as fundações e todas as colunas de construção, utilizando cores e formatação para melhor legibilidade.
+Visualização do Jogo:
+Exibição clara do estado atual do tabuleiro, incluindo o monte, as fundações e todas as colunas de construção, utilizando cores e formatação para melhor legibilidade.
 
-Reiniciar e Sair: Opções para reiniciar o jogo a qualquer momento ou para encerrar a aplicação.
+Reiniciar e Sair:
+Opções para reiniciar o jogo a qualquer momento ou encerrar a aplicação.
 
 🏗️ Arquitetura e Design
 O projeto foi estruturado com base nos pilares da POO para garantir uma arquitetura limpa e desacoplada.
 
-Pilares da POO Aplicados:
+Pilares da POO Aplicados
+Abstração
+A classe abstrata Estrutura define um contrato genérico para Pilha, Fila e ListaLigada, permitindo que o sistema as trate de forma polimórfica.
 
-Abstração: A classe abstrata Estrutura define um contrato genérico para Pilha, Fila e ListaLigada, permitindo que o sistema as trate de forma polimórfica.
+Encapsulamento
+O estado dos objetos (como os atributos da classe Carta) é protegido e acessado apenas através de métodos públicos.
 
-Encapsulamento: O estado dos objetos (como os atributos da classe Carta) é protegido e privado, sendo acessado apenas através de métodos públicos, o que garante a integridade dos dados.
+Herança
+As classes Pilha, Fila e ListaLigada herdam de Estrutura, reutilizando a definição da interface e estabelecendo uma hierarquia clara.
 
-Herança: As classes Pilha, Fila e ListaLigada herdam da classe Estrutura, reutilizando a definição da interface e estabelecendo uma hierarquia clara.
+Polimorfismo
+Métodos como adicionar() têm comportamentos diferentes dependendo se o objeto é uma Pilha, Fila ou ListaLigada, simplificando a lógica do controle do jogo.
 
-Polimorfismo: A mesma chamada de método, como adicionar(), tem comportamentos diferentes dependendo se o objeto é uma Pilha, Fila ou ListaLigada, simplificando a lógica no controlo do jogo.
+📦 Estrutura de Pacotes
+principal – Classe Main, responsável pela interface com o utilizador e pelo ciclo de vida da aplicação.
 
-Estrutura de Pacotes: O código está organizado em pacotes com responsabilidades bem definidas:
+modelo – Entidades do domínio como Carta, Baralho, Jogo e regras (Regra).
 
-principal: Contém a classe Main, responsável pela interface com o utilizador e pelo ciclo de vida da aplicação.
+estrutura – Estruturas de dados genéricas (Pilha, Fila, ListaLigada, No).
 
-modelo: As classes que representam as entidades do domínio do problema (Carta, Baralho, Jogo) e as regras de negócio (Regra).
+exceptions – Exceções personalizadas como JogadaInvalidaException.
 
-estrutura: Estruturas de dados genéricas (Pilha, Fila, ListaLigada, No) usadas para construir o jogo.
-
-exceptions: Exceções personalizadas (JogadaInvalidaException) para um controlo de erros mais semântico.
-
-util: Classes utilitárias, como o FormatadorConsole, para formatação da saída no terminal.
+util – Classes utilitárias como FormatadorConsole, para formatar a saída no terminal.
 
 🛠️ Tecnologias Utilizadas
 Java 11+
 
 Programação Orientada a Objetos
 
-Estruturas de Dados (Pilha, Fila, Lista Ligada) implementadas de forma manual, sem o uso de bibliotecas java como ArrayList, List, Collections, etc.
+Estruturas de Dados implementadas manualmente:
 
-Siga as instruções no menu do jogo para jogar!
+Pilha
+
+Fila
+
+Lista Ligada
+
+⚠️ Nota: Nenhuma biblioteca padrão de estruturas foi utilizada (ArrayList, List, Collections, etc).
+
+▶️ Como Jogar
+Siga as instruções no menu do jogo para interagir com o sistema e mover as cartas de acordo com as regras do Paciência!
 
 👤 
-GitHub: Leleco04
 
-LinkedIn: Leandro Hideki Tsuchida
+github.com/Leleco04
+
+https://www.linkedin.com/in/leandro-hideki-tsuchida-3ab4742a0/
+
