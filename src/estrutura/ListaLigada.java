@@ -1,40 +1,70 @@
 package estrutura;
 
-import exceptions.JogadaInvalidaException;
-import modelo.Carta;
-
-public class ListaLigada {
-    private No<Carta> cabeca;
-    private No<Carta> cauda;
+public class ListaLigada<T> extends Estrutura<T> {
+    private No<T> cabeca;
+    private No<T> cauda;
 
     public ListaLigada() {
         this.cabeca = null;
     }
 
-    public void exibirLista() {
-        No<Carta> no = cabeca;
-        int contagem = 1;
-        while(no != null) {
-            System.out.println(String.valueOf(contagem) + " - " + no.valor);
-            contagem++;
+    @Override
+    public T verTopo() {
+        return cabeca.valor;
+    }
+
+    @Override
+    public boolean estaVazia() {
+        return cabeca == null;
+    }
+
+    @Override
+    public void exibir() {
+        No<T> no = cabeca;
+        while (no != null) {
+            System.out.println(no.valor.toString());
             no = no.proximo;
         }
     }
 
-    public void inserirInicio(Carta carta) throws JogadaInvalidaException {
-        // Faz a validação de movimento das pilhas de construção (7)
+    // Mover validação para a classe Regra
+    @Override
+    public void adicionar(T valor) {
+        No<T> novo = new No<>(valor);
+        novo.proximo = cabeca;
+        this.cabeca = novo;
+
+        /*
+
         if (cabeca != null && cabeca.valor.getNumero() == carta.getNumero() - 1 && !cabeca.valor.getNaipeString().equals(carta.getNaipeString()) && !cabeca.valor.getCorString().equals(carta.getCorString())) {
             carta.mostrarCarta();
-            No<Carta> novo = new No<Carta>(carta);
+            No<Carta> novo = new No<>(carta);
             novo.proximo.valor.esconderCarta();
             novo.proximo = cabeca;
             cabeca = novo;
         } else if (cabeca == null) {
-            No<Carta> novo = new No<Carta>(carta);
+            No<Carta> novo = new No<>(carta);
             novo.proximo = cabeca;
             cabeca = novo;
-        } else {
-            throw new JogadaInvalidaException("Você não pode fazer esse movimento.");
         }
+
+         */
+    }
+
+    @Override
+    public T remover() {
+        cabeca = cabeca.proximo;
+        if (cabeca == null) {
+            cauda = null;
+        }
+        return cabeca.valor;
+    }
+
+    public T get(int indice) {
+        No<T> atual = cabeca;
+        for(int i = 0; atual != null && i < indice; i++) {
+            atual = atual.proximo;
+        }
+        return atual.valor;
     }
 }

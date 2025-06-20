@@ -1,5 +1,6 @@
 package modelo;
 
+import estrutura.Estrutura;
 import estrutura.Fila;
 import estrutura.ListaLigada;
 import estrutura.Pilha;
@@ -11,65 +12,96 @@ public class Jogo {
     static Random gerador = new Random();
     private Baralho baralho;
     private Carta[] cartas;
-    private ListaLigada[] listaConstrucao;
-    private Pilha[] pilhaFundacao;
-    private Fila monte;
+    private ListaLigada<Carta>[] listaConstrucao = new ListaLigada[7];
+    private Pilha<Carta>[] pilhaFundacao = new Pilha[4];
+    private Fila<Carta> monte;
 
     public Jogo() {
         baralho = new Baralho();
-        listaConstrucao = new ListaLigada[7];
-        pilhaFundacao = new Pilha[4];
-        monte = new Fila();
+        monte = new Fila<>();
         cartas = baralho.getBaralho();
 
         for (int i = 0; i < listaConstrucao.length; i++) {
-            listaConstrucao[i] = new ListaLigada();
+            listaConstrucao[i] = new ListaLigada<>();
         }
 
         for (int i = 0; i < pilhaFundacao.length; i++) {
-            pilhaFundacao[i] = new Pilha();
+            pilhaFundacao[i] = new Pilha<>();
         }
     }
 
-    public void iniciar() {
+    public ListaLigada<Carta>[] getListaConstrucao() {
+        return listaConstrucao;
+    }
+
+    public Pilha<Carta>[] getPilhaFundacao() {
+        return pilhaFundacao;
+    }
+
+    public void iniciar() throws JogadaInvalidaException {
+
+        this.monte = new Fila<>();
+
+        for (int i = 0; i < listaConstrucao.length; i++) {
+            this.listaConstrucao[i] = new ListaLigada<>();
+        }
+
+        for (int i = 0; i < pilhaFundacao.length; i++) {
+            this.pilhaFundacao[i] = new Pilha<>();
+        }
+
         embaralhar();
-        int rnd;
-        int contagem = 0;
+        esconderCartas();
+
         int[] numerosGerados = new int[52];
+
+        // Inicialize o vetor com -1 ou outro valor inválido
+        for (int k = 0; k < 52; k++) {
+            numerosGerados[k] = -1;
+        }
+
+        int contagem = 0;
+        int rnd;
+
         for (int i = 0; i < 24; i++) {
-            rnd = gerador.nextInt(1, cartas.length);
-            while (!verificarNumero(rnd, numerosGerados)) {
-                rnd = gerador.nextInt(1, cartas.length);
-            }
+            do {
+                rnd = gerador.nextInt(cartas.length);
+            } while (!verificarNumero(rnd, numerosGerados));
             numerosGerados[contagem] = rnd;
-            monte.enqueue(cartas[rnd]);
+            monte.adicionar(cartas[rnd]);
             contagem++;
         }
-        monte.get().mostrarCarta();
+
+        monte.verTopo().mostrarCarta();
+
+        for (int j = 0; j < listaConstrucao.length; j++) {
+            for (int x = 0; x <= j; x++) {
+                do {
+                    rnd = gerador.nextInt(cartas.length);
+                } while (!verificarNumero(rnd, numerosGerados));
+                numerosGerados[contagem] = rnd;
+                // ... lógica de mostrar/esconder e adicionar a carta ...
+                Regra.inserirLista(listaConstrucao[j], cartas[rnd], "inicio");
+                contagem++;
+            }
+            listaConstrucao[j].verTopo().mostrarCarta();
+        }
     }
 
     public void embaralhar() {
         baralho.embaralhar();
     }
 
-    public void inserirListaConstrucao(Carta carta) {
-        try {
-            listaConstrucao[0].inserirInicio(carta);
-        } catch(JogadaInvalidaException e){
-            System.out.println(e.getMessage());
+    public void esconderCartas() {
+        for(int i = 0; i < baralho.getBaralho().length; i++) {
+            cartas[i].esconderCarta();
         }
     }
 
-    public void inserirPilhaFundacao(Carta carta) {
-        try {
-            Regra.inserirPilha(pilhaFundacao[0], carta);
-        } catch(JogadaInvalidaException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void exibirListaConstrucao() {
-        listaConstrucao[0].exibirLista();
+    public void rodarFila() {
+        monte.verTopo().esconderCarta();
+        monte.adicionar(monte.remover());
+        monte.verTopo().mostrarCarta();
     }
 
     public boolean verificarNumero(int n, int[] numerosGerados) {
@@ -81,19 +113,46 @@ public class Jogo {
         return true;
     }
 
-    public void mostrarMonte() {
-        monte.exibirFila();
-    }
-
-    public Fila getMonte() {
+    public Fila<Carta> getMonte() {
         return monte;
     }
 
-    public void verEstadoAtual() {
-        System.out.println("\nMonte: ");
-        monte.exibirFila();
+    public String getMonteToString() {
+        StringBuilder monte = new StringBuilder();
+        monte.append("\nMonte: \n");
+        monte.append(getMonte().verTopo());
+        return String.valueOf(monte);
+    }
 
-        System.out.println("\nLista: ");
-        listaConstrucao[0].exibirLista();
+    public void verEstadoAtual() {
+        for (ListaLigada lista : listaConstrucao) {
+            lista.exibir();
+            System.out.println();
+        }
+    }
+
+    public void removerCartaMonte() {
+        monte.remover();
+        monte.verTopo().mostrarCarta();
+    }
+
+    public String getPilhasToString() {
+        StringBuilder pilhas = new StringBuilder();
+        pilhas.append("\nPilhas: \n");
+
+        int contagem = 1;
+
+        for (Pilha pilha : pilhaFundacao) {
+            if (!pilha.estaVazia()) pilhas.append(contagem + " - " + pilha.verTopo() + "\n");
+            else pilhas.append(contagem + " - Vazia.\n");
+            contagem++;
+        }
+
+        return String.valueOf(pilhas);
+    }
+
+    public void removerUmaCartaLista(ListaLigada<Carta> lista) {
+        lista.remover();
+        lista.verTopo().mostrarCarta();
     }
 }

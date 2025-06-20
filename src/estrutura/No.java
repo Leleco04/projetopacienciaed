@@ -1,10 +1,10 @@
 package estrutura;
 
-public class No<Carta>{
-    public Carta valor;
-    public No<Carta> proximo;
+public class No<T>{
+    public T valor;
+    public No<T> proximo;
 
-    public No(Carta valor) {
+    public No(T valor) {
         this.valor = valor;
         this.proximo = null;
     }

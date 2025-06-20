@@ -1,36 +1,42 @@
 package estrutura;
 
-import exceptions.JogadaInvalidaException;
-import modelo.Carta;
-
-public class Pilha {
-    private No<Carta> cabeca;
+public class Pilha<T> extends Estrutura<T> {
+    private No<T> cabeca;
 
     public Pilha() {
         this.cabeca = null;
     }
 
-    public void push(Carta carta) {
-        // Faz a validação do movimento das pilhas de funcação (4 naipes)
-        if (cabeca != null) {
-            No<Carta> novo = new No<Carta>(carta);
-            novo.proximo = cabeca;
-            cabeca = novo;
-        }
+    @Override
+    public T verTopo() {
+        return cabeca.valor;
     }
 
-    public void exibirPilha() {
-        No<Carta> atual = cabeca;
+    @Override
+    public T remover() {
+        T valorRemovido = cabeca.valor;
+        cabeca = cabeca.proximo;
+        return valorRemovido;
+    }
+
+    @Override
+    public void adicionar(T valor) {
+        No<T> novo = new No<>(valor);
+        novo.proximo = cabeca;
+        cabeca = novo;
+    }
+
+    @Override
+    public boolean estaVazia() {
+        return cabeca == null;
+    }
+
+    @Override
+    public void exibir() {
+        No<T> atual = cabeca;
         while (atual != null) {
-            System.out.println(atual.valor);
+            System.out.println(atual.valor.toString());
             atual = atual.proximo;
         }
-    }
-
-    public Carta get() {
-        if(this.cabeca != null) {
-            return cabeca.valor;
-        }
-        return null;
     }
 }
