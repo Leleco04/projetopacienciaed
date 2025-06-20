@@ -33,7 +33,8 @@ Reiniciar e Sair: Opções para reiniciar o jogo a qualquer momento ou para ence
 O projeto foi estruturado com base nos pilares da POO para garantir uma arquitetura limpa e desacoplada.
 
 Pilares da POO Aplicados:
-Abstração: A classe abstrata Estrutura<T> define um contrato genérico para Pilha, Fila e ListaLigada, permitindo que o sistema as trate de forma polimórfica.
+
+Abstração: A classe abstrata Estrutura define um contrato genérico para Pilha, Fila e ListaLigada, permitindo que o sistema as trate de forma polimórfica.
 
 Encapsulamento: O estado dos objetos (como os atributos da classe Carta) é protegido e privado, sendo acessado apenas através de métodos públicos, o que garante a integridade dos dados.
 
@@ -41,8 +42,7 @@ Herança: As classes Pilha, Fila e ListaLigada herdam da classe Estrutura, reuti
 
 Polimorfismo: A mesma chamada de método, como adicionar(), tem comportamentos diferentes dependendo se o objeto é uma Pilha, Fila ou ListaLigada, simplificando a lógica no controlo do jogo.
 
-Estrutura de Pacotes
-O código está organizado em pacotes com responsabilidades bem definidas:
+Estrutura de Pacotes: O código está organizado em pacotes com responsabilidades bem definidas:
 
 principal: Contém a classe Main, responsável pela interface com o utilizador e pelo ciclo de vida da aplicação.
 
@@ -63,6 +63,7 @@ Estruturas de Dados (Pilha, Fila, Lista Ligada) implementadas de forma manual, s
 
 Siga as instruções no menu do jogo para jogar!
 
-👤
-https://github.com/Leleco04
-https://www.linkedin.com/in/leandro-hideki-tsuchida-3ab4742a0/
+👤 
+GitHub: Leleco04
+
+LinkedIn: Leandro Hideki Tsuchida
