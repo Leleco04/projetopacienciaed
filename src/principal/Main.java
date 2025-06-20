@@ -19,7 +19,7 @@ public class Main {
     }
 
     public static void menuPrincipal(Jogo jogo) {
-        boolean finalizar = false;
+        boolean sairMenu = false;
         boolean sairJogo = false;
 
         do {
@@ -35,7 +35,6 @@ public class Main {
                     jogo.embaralhar();
                     break;
                 case 2:
-
                     try {
                         jogo.iniciar();
                     } catch (JogadaInvalidaException e) {
@@ -59,36 +58,12 @@ public class Main {
 
                         switch (Character.toLowerCase(acao)) {
                             case 'a':
-                                // Feito
-
-                                System.out.println("Monte: ");
-                                System.out.println(jogo.getMonte().verTopo() + "\n");
-
-                                for (int i = 0; i < jogo.getPilhaFundacao().length; i++) {
-                                    System.out.println("Pilha número " + (String.valueOf(i + 1) + ": "));
-                                    if (!jogo.getPilhaFundacao()[i].estaVazia()) {
-                                        System.out.println(jogo.getPilhaFundacao()[i].verTopo());
-                                    }
-                                }
-
-                                System.out.println("\nPara qual pilha deseja movimentar a carta?");
-
-                                int pilha = teclado.nextInt();
-
-                                try {
-                                    Regra.inserirPilha(jogo.getPilhaFundacao()[pilha - 1], jogo.getMonte().verTopo());
-                                    jogo.removerCartaMonte();
-                                } catch (JogadaInvalidaException e) {
-                                    System.out.println(e.getMessage());
-                                }
+                                // OK
+                                movimentarFilaParaPilha(jogo);
                                 break;
                             case 'b':
-                                // Rodar fila e exibir monte está funcionando
-                                // ***
-                                // ESCOLHA DE USAR CARTA PARA USUÁRIO
-                                // ***
+                                // OK
 
-                                jogo.rodarFila();
                                 System.out.println("\n" + jogo.getMonte().verTopo());
 
                                 boolean sair = false;
@@ -106,6 +81,26 @@ public class Main {
                                             System.out.println("\nEscolha uma opção");
                                             System.out.println("1 - Mover para pilha (fundação)");
                                             System.out.println("2 - Mover para lista (construção)");
+                                            System.out.println("3 - Sair");
+
+                                            opcaoMonte = teclado.nextInt();
+
+                                            switch (opcaoMonte) {
+                                                case 1:
+                                                    movimentarFilaParaPilha(jogo);
+                                                    sair = true;
+                                                    break;
+                                                case 2:
+                                                    movimentarFilaParaLista(jogo);
+                                                    sair = true;
+                                                    break;
+                                                case 3:
+                                                    sair = true;
+                                                    break;
+                                                default:
+                                                    System.out.println("\nOpção inválida.");
+                                                    break;
+                                            }
                                             break;
                                         case 2:
                                             jogo.rodarFila();
@@ -119,30 +114,11 @@ public class Main {
 
                                 break;
                             case 'c':
-                                // Feito
-                                System.out.println("\nMonte: ");
-                                System.out.println(jogo.getMonte().verTopo());
-
-                                for (int i = 0; i < jogo.getListaConstrucao().length; i++) {
-                                    System.out.println("\nLista " + String.valueOf(i + 1) + ":");
-                                    jogo.getListaConstrucao()[i].exibir();
-                                }
-
-                                System.out.println("\nSelecione a lista para qual deseja mover:");
-
-                                int iLista = teclado.nextInt();
-
-                                try {
-                                    Regra.inserirLista(jogo.getListaConstrucao()[iLista - 1], jogo.getMonte().verTopo(), "durante");
-                                    jogo.removerCartaMonte();
-                                } catch (JogadaInvalidaException e) {
-                                    System.out.println(e.getMessage());
-                                }
-
+                                // OK
+                                movimentarFilaParaLista(jogo);
                                 break;
                             case 'd':
-                                // Verificar funcionamento
-                                // Movimentar da lista para pilha
+                                // OK
 
                                 for (int i = 0; i < jogo.getListaConstrucao().length; i++) {
                                     System.out.println("\nLista " + String.valueOf(i + 1) + ":");
@@ -168,16 +144,15 @@ public class Main {
 
                                 break;
                             case 'e':
+                                // Movimentar de uma lista para outra
+
                                 for (ListaLigada l : jogo.getListaConstrucao()) {
                                     System.out.print("1 - ");
                                     l.exibir();
                                 }
-
-
-                                // Movimentar de uma lista para outra
                                 break;
                             case 'f':
-                                // Feito
+                                // OK
                                 try {
                                     jogo.iniciar();
                                     System.out.println("\nJogo reiniciado");
@@ -186,7 +161,7 @@ public class Main {
                                 }
                                 break;
                             case 'g':
-                                // Feito
+                                // OK
                                 for (int i = 0; i < jogo.getListaConstrucao().length; i++) {
                                     System.out.println("\nLista " + String.valueOf(i + 1) + ":");
                                     jogo.getListaConstrucao()[i].exibir();
@@ -195,18 +170,67 @@ public class Main {
                                 System.out.println(jogo.getPilhasToString());
                                 break;
                             default:
+                                // OK
                                 System.out.println("\nAção inválida.");
                                 break;
                         }
                     }
                     break;
                 case 3:
-                    finalizar = true;
+                    // OK
+                    sairMenu = true;
                     break;
                 default:
+                    // OK
                     System.out.println("\nOpção inválida.");
                     break;
             }
-        } while (!finalizar);
+        } while (!sairMenu);
+    }
+
+    // Mover esses 2 métodos para Jogo
+
+    public static void movimentarFilaParaPilha(Jogo jogo) {
+        System.out.println("\nMonte: ");
+        System.out.println(jogo.getMonte().verTopo() + "\n");
+
+        for (int i = 0; i < jogo.getPilhaFundacao().length; i++) {
+            System.out.println("Pilha número " + (String.valueOf(i + 1) + ": "));
+            if (!jogo.getPilhaFundacao()[i].estaVazia()) {
+                System.out.println(jogo.getPilhaFundacao()[i].verTopo());
+            }
+        }
+
+        System.out.println("\nPara qual pilha deseja movimentar a carta?");
+
+        int pilha = teclado.nextInt();
+
+        try {
+            Regra.inserirPilha(jogo.getPilhaFundacao()[pilha - 1], jogo.getMonte().verTopo());
+            jogo.removerCartaMonte();
+        } catch (JogadaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void movimentarFilaParaLista(Jogo jogo) {
+        System.out.println("\nMonte: ");
+        System.out.println(jogo.getMonte().verTopo());
+
+        for (int i = 0; i < jogo.getListaConstrucao().length; i++) {
+            System.out.println("\nLista " + String.valueOf(i + 1) + ":");
+            jogo.getListaConstrucao()[i].exibir();
+        }
+
+        System.out.println("\nSelecione a lista para qual deseja mover:");
+
+        int iLista = teclado.nextInt();
+
+        try {
+            Regra.inserirLista(jogo.getListaConstrucao()[iLista - 1], jogo.getMonte().verTopo());
+            jogo.removerCartaMonte();
+        } catch (JogadaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

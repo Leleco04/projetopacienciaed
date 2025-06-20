@@ -14,7 +14,7 @@ public class Regra {
             if (carta.getNumero() == 1) {
                 // A carta é adicionada a pilha selecionada
                 pilha.adicionar(carta);
-            // Se a carta não for número 1 (ÀS)
+                // Se a carta não for número 1 (ÀS)
             } else {
                 // A excessão de jogada inválida é lançada
                 throw new JogadaInvalidaException("\nA primeira carta da pilha de fundação deve ser um Ás.");
@@ -31,7 +31,7 @@ public class Regra {
             if (carta.getNaipeString().equals(primeiraCarta.getNaipeString()) && carta.getNumero() == primeiraCarta.getNumero() + 1) {
                 // Adiciona a carta selecionada a pilha
                 pilha.adicionar(carta);
-            // Caso as regras não forem satisfeitas
+                // Caso as regras não forem satisfeitas
             } else {
                 // Lança una excessão de jogada inválida
                 throw new JogadaInvalidaException("\nA carta deve seguir a sequência crescente e ser do mesmo naipe.");
@@ -40,42 +40,74 @@ public class Regra {
     }
 
     // Método para inserir na lista (7 listas, ordenadas de forma decrescente, com cores alternadas)
-    public static void inserirLista(ListaLigada<Carta> lista, Carta carta, String status) throws JogadaInvalidaException {
-        // Se as cartas estiverem sendo adicionadas no início do jogo, a verificação de regras é ignorada
-        if(status.equalsIgnoreCase("inicio")) {
-            // Adiciona a carta a lista ligada
-            lista.adicionar(carta);
-        // Caso a movimentação seja "durante" o jogo, verifica as regras para completar o movimento
-        } else if(status.equalsIgnoreCase("durante")) {
-            // Verifica se a lista está vazia
-            if(lista.estaVazia()) {
-                // Se a lista estiver vazia e o número da carta for 13 (REI - K), completa o movimento
-                if(carta.getNumero() == 13) {
-                    // Torna a carta visível
-                    carta.mostrarCarta();
-                    // Adiciona a carta a lista ligada
-                    lista.adicionar(carta);
-                } else {
-                    // Lança a excessão de movimento inválido
-                    throw new JogadaInvalidaException("\nA primeira carta da lista de construção deve ser um Rei (K).");
-                }
-            // Se a lista não estiver vazia
+    public static void inserirLista(ListaLigada<Carta> lista, Carta carta) throws JogadaInvalidaException {
+        if (lista.estaVazia()) {
+            // Se a lista estiver vazia e o número da carta for 13 (REI - K), completa o movimento
+            if (carta.getNumero() == 13) {
+                // Torna a carta visível
+                carta.mostrarCarta();
+                // Adiciona a carta a lista ligada
+                lista.adicionar(carta);
             } else {
-                // Pega a carta que está no topo
-                Carta primeiraCarta = lista.verTopo();
+                // Lança a excessão de movimento inválido
+                throw new JogadaInvalidaException("\nA primeira carta da lista de construção deve ser um Rei (K).");
+            }
+            // Se a lista não estiver vazia
+        } else {
+            // Pega a carta que está no topo
+            Carta primeiraCarta = lista.verTopo();
 
-                // Faz a verificação de regras
-                // 1 - Se a primeira carta da lista for 1 valor maior que a carta a ser movimentada
-                // 2 - Se a primeira carta da lista tem a cor diferente da carta a ser movimentada
-                if(primeiraCarta.getNumero() == carta.getNumero() + 1 && !primeiraCarta.getCorString().equals(carta.getCorString())) {
-                    // Adiciona a carta a lista ligada
-                    lista.adicionar(carta);
+            // Faz a verificação de regras
+            // 1 - Se a primeira carta da lista for 1 valor maior que a carta a ser movimentada
+            // 2 - Se a primeira carta da lista tem a cor diferente da carta a ser movimentada
+            if (primeiraCarta.getNumero() == carta.getNumero() + 1 && !primeiraCarta.getCorString().equals(carta.getCorString())) {
+                // Adiciona a carta a lista ligada
+                lista.adicionar(carta);
                 // Se as regras não forem satisfeitas
-                } else {
-                    // Lança a excessão de jogada inválida
-                    throw new JogadaInvalidaException("\nA carta deve seguir a sequência decrescente e ser de cor oposta.");
-                }
+            } else {
+                // Lança a excessão de jogada inválida
+                throw new JogadaInvalidaException("\nA carta deve seguir a sequência decrescente e ser de cor oposta.");
             }
         }
     }
+
+//    // Método para inserir na lista (7 listas, ordenadas de forma decrescente, com cores alternadas)
+//    public static void inserirLista(ListaLigada<Carta> lista, Carta carta, String status) throws JogadaInvalidaException {
+//        // Se as cartas estiverem sendo adicionadas no início do jogo, a verificação de regras é ignorada
+//        if(status.equalsIgnoreCase("inicio")) {
+//            // Adiciona a carta a lista ligada
+//            lista.adicionar(carta);
+//        // Caso a movimentação seja "durante" o jogo, verifica as regras para completar o movimento
+//        } else if(status.equalsIgnoreCase("durante")) {
+//            // Verifica se a lista está vazia
+//            if(lista.estaVazia()) {
+//                // Se a lista estiver vazia e o número da carta for 13 (REI - K), completa o movimento
+//                if(carta.getNumero() == 13) {
+//                    // Torna a carta visível
+//                    carta.mostrarCarta();
+//                    // Adiciona a carta a lista ligada
+//                    lista.adicionar(carta);
+//                } else {
+//                    // Lança a excessão de movimento inválido
+//                    throw new JogadaInvalidaException("\nA primeira carta da lista de construção deve ser um Rei (K).");
+//                }
+//            // Se a lista não estiver vazia
+//            } else {
+//                // Pega a carta que está no topo
+//                Carta primeiraCarta = lista.verTopo();
+//
+//                // Faz a verificação de regras
+//                // 1 - Se a primeira carta da lista for 1 valor maior que a carta a ser movimentada
+//                // 2 - Se a primeira carta da lista tem a cor diferente da carta a ser movimentada
+//                if(primeiraCarta.getNumero() == carta.getNumero() + 1 && !primeiraCarta.getCorString().equals(carta.getCorString())) {
+//                    // Adiciona a carta a lista ligada
+//                    lista.adicionar(carta);
+//                // Se as regras não forem satisfeitas
+//                } else {
+//                    // Lança a excessão de jogada inválida
+//                    throw new JogadaInvalidaException("\nA carta deve seguir a sequência decrescente e ser de cor oposta.");
+//                }
+//            }
+//        }
+//    }
 }
