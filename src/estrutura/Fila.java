@@ -25,7 +25,10 @@ public class Fila<T> extends Estrutura<T> {
 
     @Override
     public T verTopo() {
-        return cabeca.valor;
+        if(cabeca != null) {
+            return cabeca.valor;
+        }
+        return null;
     }
 
     @Override
@@ -53,5 +56,15 @@ public class Fila<T> extends Estrutura<T> {
             cauda = null;
         }
         return valor;
+    }
+
+    public T get(int indice) {
+        No<T> atual = cabeca;
+
+        for(int i = 0; atual != null && i < indice; i++) {
+            atual = atual.proximo;
+        }
+
+        return atual.proximo.valor;
     }
 }

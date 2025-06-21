@@ -9,7 +9,10 @@ public class Pilha<T> extends Estrutura<T> {
 
     @Override
     public T verTopo() {
-        return cabeca.valor;
+        if(cabeca != null) {
+            return cabeca.valor;
+        }
+        return null;
     }
 
     @Override

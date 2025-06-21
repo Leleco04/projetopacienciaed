@@ -1,6 +1,5 @@
 package modelo;
 
-import estrutura.Estrutura;
 import estrutura.Fila;
 import estrutura.ListaLigada;
 import estrutura.Pilha;
@@ -15,8 +14,10 @@ public class Jogo {
     private ListaLigada<Carta>[] listaConstrucao = new ListaLigada[7];
     private Pilha<Carta>[] pilhaFundacao = new Pilha[4];
     private Fila<Carta> monte;
+    private Regra regras;
 
     public Jogo() {
+        regras = new Regra();
         baralho = new Baralho();
         monte = new Fila<>();
         cartas = baralho.getBaralho();
@@ -38,7 +39,7 @@ public class Jogo {
         return pilhaFundacao;
     }
 
-    public void iniciar() throws JogadaInvalidaException {
+    public void iniciar() {
 
         this.monte = new Fila<>();
 
@@ -53,37 +54,23 @@ public class Jogo {
         embaralhar();
         esconderCartas();
 
-        int[] numerosGerados = new int[52];
-
-        // Inicialize o vetor com -1 ou outro valor inválido
-        for (int k = 0; k < 52; k++) {
-            numerosGerados[k] = -1;
-        }
-
-        int contagem = 0;
-        int rnd;
+        Carta[] cartasEmbaralhadas = baralho.getBaralho();
+        int indiceCartaAtual = 0;
 
         for (int i = 0; i < 24; i++) {
-            do {
-                rnd = gerador.nextInt(cartas.length);
-            } while (!verificarNumero(rnd, numerosGerados));
-            numerosGerados[contagem] = rnd;
-            monte.adicionar(cartas[rnd]);
-            contagem++;
+            monte.adicionar(cartasEmbaralhadas[indiceCartaAtual++]);
+        }
+        if (!monte.estaVazia()) {
+            monte.verTopo().mostrarCarta();
         }
 
-        monte.verTopo().mostrarCarta();
-
-        for (int j = 0; j < listaConstrucao.length; j++) {
-            for (int x = 0; x <= j; x++) {
-                do {
-                    rnd = gerador.nextInt(cartas.length);
-                } while (!verificarNumero(rnd, numerosGerados));
-                numerosGerados[contagem] = rnd;
-                listaConstrucao[j].adicionar(cartas[rnd]);
-                contagem++;
+        for (int i = 0; i < listaConstrucao.length; i++) {
+            for (int j = 0; j <= i; j++) {
+                listaConstrucao[i].adicionar(cartasEmbaralhadas[indiceCartaAtual++]);
             }
-            listaConstrucao[j].verTopo().mostrarCarta();
+            if (!listaConstrucao[i].estaVazia()) {
+                listaConstrucao[i].verTopo().mostrarCarta();
+            }
         }
     }
 
@@ -154,6 +141,96 @@ public class Jogo {
         lista.remover();
         if(!lista.estaVazia()) {
             lista.verTopo().mostrarCarta();
+        }
+    }
+
+    public void moverMonteParaLista(int indiceLista) throws JogadaInvalidaException {
+        // Se o monte estiver vazio lança excessão
+        if (this.monte.estaVazia()) {
+            throw new JogadaInvalidaException("O monte está vazio, não há carta para mover.");
+        }
+        // Se o indíce não for válido, a excessão é lançada
+        if (indiceLista < 0 || indiceLista >= this.listaConstrucao.length) {
+            throw new JogadaInvalidaException("Pilha de fundação inválida. Escolha entre 1 e 7.");
+        }
+
+        Carta cartaParaMover = this.monte.verTopo();
+        ListaLigada<Carta> lista = this.listaConstrucao[indiceLista];
+
+        regras.validarInsercaoLista(lista, cartaParaMover);
+
+        this.removerCartaMonte();
+    }
+
+    public void moverMonteParaFundacao(int indicePilha) throws JogadaInvalidaException {
+        // Se o monte estiver vazio lança excessão
+        if (this.monte.estaVazia()) {
+            throw new JogadaInvalidaException("O monte está vazio, não há carta para mover.");
+        }
+        // Se o indíce não for válido, a excessão é lançada
+        if (indicePilha < 0 || indicePilha >= this.pilhaFundacao.length) {
+            throw new JogadaInvalidaException("Pilha de fundação inválida. Escolha entre 1 e 4.");
+        }
+
+        // Pega a carta a ser movimentada e a pilha que será adicionada
+        Carta cartaParaMover = this.monte.verTopo();
+        Pilha<Carta> pilhaDestino = this.pilhaFundacao[indicePilha];
+
+        // Tenta inserir a carta na pilha
+        regras.validarInsercaoPilha(pilhaDestino, cartaParaMover);
+
+        // Se a carta for inserida, é removida do monte
+        this.removerCartaMonte();
+    }
+
+    public Regra getRegras() {
+        return regras;
+    }
+
+    public void moverListaParaFundacao(int indiceLista, int indicePilha) throws JogadaInvalidaException {
+        if (indiceLista < 0 || indiceLista >= this.listaConstrucao.length) {
+            throw new JogadaInvalidaException("Lista de construção inválida.");
+        }
+        if (indicePilha < 0 || indicePilha >= this.pilhaFundacao.length) {
+            throw new JogadaInvalidaException("Pilha de fundação inválida.");
+        }
+
+        ListaLigada<Carta> listaOrigem = this.listaConstrucao[indiceLista];
+        Pilha<Carta> pilhaDestino = this.pilhaFundacao[indicePilha];
+
+        getRegras().verificarListaVazia(listaOrigem);
+
+        Carta cartaParaMover = listaOrigem.verTopo();
+
+        getRegras().validarInsercaoPilha(pilhaDestino, cartaParaMover);
+
+        removerUmaCartaLista(listaOrigem);
+    }
+
+    public void moverConstrucaoParaConstrucao(int indiceOrigem, int indiceDestino, int quantidadeDeCartas) throws JogadaInvalidaException {
+        if (indiceOrigem < 0 || indiceOrigem >= 7 || indiceDestino < 0 || indiceDestino >= 7 || indiceOrigem == indiceDestino) {
+            throw new JogadaInvalidaException("Seleção de listas inválida.");
+        }
+
+        ListaLigada<Carta> listaOrigem = this.listaConstrucao[indiceOrigem];
+        ListaLigada<Carta> listaDestino = this.listaConstrucao[indiceDestino];
+
+        if (quantidadeDeCartas <= 0 || quantidadeDeCartas > listaOrigem.tamanho()) {
+            throw new JogadaInvalidaException("Quantidade de cartas para mover é inválida.");
+        }
+
+        Carta cartaInicialDoBloco = listaOrigem.get(quantidadeDeCartas - 1);
+        if (!cartaInicialDoBloco.isVisivel()) {
+            throw new JogadaInvalidaException("Não é possível iniciar um movimento com uma carta virada para baixo.");
+        }
+
+        this.regras.validarInsercaoLista(listaDestino.verTopo(), cartaInicialDoBloco);
+
+        ListaLigada<Carta> blocoParaMover = listaOrigem.removerDoTopo(quantidadeDeCartas);
+        listaDestino.adicionarLista(blocoParaMover);
+
+        if (!listaOrigem.estaVazia() && !listaOrigem.verTopo().isVisivel()) {
+            listaOrigem.verTopo().mostrarCarta();
         }
     }
 }

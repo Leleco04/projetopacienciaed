@@ -3,8 +3,6 @@ package modelo;
 import modelo.enumeracao.Cor;
 import modelo.enumeracao.Naipe;
 
-import static util.FormatadorConsole.*;
-
 public class Carta {
     private int numero; // 1 = Ás, 11 = Valete, 12 = Dama, 13 = Rei
     private Naipe naipe;
@@ -24,16 +22,16 @@ public class Carta {
 
     public String getNaipeString() {
         if(isVisivel()) {
-            if(cor.equals(Cor.VERMELHA)) return NEGRITO + VERMELHO + String.valueOf(naipe) + RESET;
-            else return NEGRITO + PRETO + String.valueOf(naipe) + RESET;
+            if(cor.equals(Cor.VERMELHA)) return String.valueOf(naipe);
+            else return String.valueOf(naipe);
         } else {
             return "[?]";
         }
     }
 
     public String getCorString() {
-        if(cor.equals(Cor.VERMELHA)) return NEGRITO + VERMELHO + String.valueOf(cor) + RESET;
-        else return NEGRITO + PRETO + String.valueOf(cor) + RESET;
+        if(cor.equals(Cor.VERMELHA)) return String.valueOf(cor);
+        else return String.valueOf(cor);
     }
 
     public Cor getCor() {

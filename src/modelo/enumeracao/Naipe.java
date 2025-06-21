@@ -1,10 +1,12 @@
 package modelo.enumeracao;
 
+import static util.FormatadorConsole.*;
+
 public enum Naipe {
-    OUROS("Ouro (♢)"),
-    COPAS("Copas (♡)"),
-    ESPADAS("Espadas (♤)"),
-    PAUS("Paus (♧)");
+    OUROS(NEGRITO + VERMELHO + "Ouro (♢)" + RESET),
+    COPAS(NEGRITO + VERMELHO + "Copas (♡)" + RESET),
+    ESPADAS(NEGRITO + PRETO + "Espadas (♤)" + RESET),
+    PAUS(NEGRITO + PRETO + "Paus (♧)" + RESET);
 
     private final String naipe;
 
